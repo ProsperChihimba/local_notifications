@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class NotificationController extends ChangeNotifier {
   static final NotificationController _instance =
@@ -33,6 +34,82 @@ class NotificationController extends ChangeNotifier {
         ),
       ],
       debug: debug,
+    );
+  }
+
+  // Event listeners
+  static Future<void> initializeNotificationsEventListeners() async {
+    //
+    await AwesomeNotifications().setListeners(
+      onActionReceivedMethod:
+          NotificationController.onDismissActionReceivedMethod,
+      onDismissActionReceivedMethod:
+          NotificationController.onDismissActionReceivedMethod,
+      onNotificationCreatedMethod:
+          NotificationController.onNotificationCreatedMethod,
+      // onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
+    );
+  }
+
+  //
+  static Future<void> onActionReceivedMethod(
+      ReceivedAction receivedAction) async {
+    bool isSilentAction =
+        receivedAction.actionType == ActionType.SilentAction ||
+            receivedAction.actionType == ActionType.SilentBackgroundAction;
+
+    debugPrint(
+      "${isSilentAction ? 'silentAction' : 'Action'} Notification received }",
+    );
+
+    Fluttertoast.showToast(
+      msg:
+          "${isSilentAction ? 'silentAction' : 'Action'} Notification received }",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.blue,
+      gravity: ToastGravity.BOTTOM,
+    );
+  }
+
+  static Future<void> onNotificationCreatedMethod(
+      ReceivedNotification receivedAction) async {
+    debugPrint(
+      "Notification created",
+    );
+
+    Fluttertoast.showToast(
+      msg: "Notification created",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.blue,
+      gravity: ToastGravity.BOTTOM,
+    );
+  }
+
+  static Future<void> onNotificationDisplayedMethod(
+      ReceivedAction receivedAction) async {
+    debugPrint(
+      "Notification displayed",
+    );
+
+    Fluttertoast.showToast(
+      msg: "Notification displayed",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.blue,
+      gravity: ToastGravity.BOTTOM,
+    );
+  }
+
+  static Future<void> onDismissActionReceivedMethod(
+      ReceivedAction receivedAction) async {
+    debugPrint(
+      "Notification dismiss",
+    );
+
+    Fluttertoast.showToast(
+      msg: "Notification dismiss",
+      toastLength: Toast.LENGTH_SHORT,
+      backgroundColor: Colors.blue,
+      gravity: ToastGravity.BOTTOM,
     );
   }
 }

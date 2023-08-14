@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:local_notifications/services/local_notification.dart';
+import 'package:local_notifications/services/notification_contoller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +20,8 @@ class _HomePageState extends State<HomePage> {
         }
       },
     );
+
+    NotificationController.initializeNotificationsEventListeners();
 
     super.initState();
   }
