@@ -1,28 +1,11 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:local_notifications/home.dart';
+import 'package:local_notifications/services/notification_contoller.dart';
 
-void main() {
-  AwesomeNotifications().initialize(
-    null,
-    [
-      NotificationChannel(
-        channelKey: "basic_channel",
-        channelName: "Basic notifications",
-        channelDescription: "Notification channel for basic tests",
-        importance: NotificationImportance.Max,
-        defaultPrivacy: NotificationPrivacy.Private,
-        enableVibration: true,
-        defaultColor: Colors.redAccent,
-        channelShowBadge: true,
-        enableLights: true,
-        icon: 'resource://drawable/res_naruto',
-        // playSound: true,
-        // soundSource: 'resource://raw/naruto_jutsu',
-      ),
-    ],
-    debug: true,
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await NotificationController.initializeLocalNotifications(debug: true);
   runApp(const MyApp());
 }
 

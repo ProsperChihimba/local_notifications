@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:local_notifications/services/local_notification.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,24 +23,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  // send notification
-  void triggerNotification() {
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 3,
-          channelKey: 'basic_channel',
-          title: "Proc notification",
-          body: "Hey awesome prosper",
-          bigPicture:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrRMHThLy0_Kq7eU7AwuhDoOiI5yyIyQQARA&usqp=CAU",
-          notificationLayout: NotificationLayout.BigPicture,
-        ),
-        schedule: NotificationCalendar(
-          second: 0,
-          repeats: true,
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +30,11 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           //
           child: ElevatedButton(
-            onPressed: triggerNotification,
-            child: const Text("Trigger notification"),
+            onPressed: () =>
+                LocalNotification.showNotificationWithActionButtons(
+              11,
+            ),
+            child: Text("Action Notification"),
           ),
         ),
       ),
