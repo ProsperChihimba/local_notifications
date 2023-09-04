@@ -1,6 +1,21 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:local_notifications/main.dart';
+import 'package:local_notifications/temp_screen.dart';
+
+// check received notification
+navigateHelper(ReceivedAction receivedAction) {
+  // check received payload
+  if (receivedAction.payload != null &&
+      receivedAction.payload!['Screen_name'] == 'TEMP_SCREEN') {
+    MyApp.navigationKey.currentState!.push(
+      MaterialPageRoute(
+        builder: (_) => const TempScreen(),
+      ),
+    );
+  }
+}
 
 class NotificationController extends ChangeNotifier {
   static final NotificationController _instance =
@@ -19,7 +34,7 @@ class NotificationController extends ChangeNotifier {
       null,
       [
         NotificationChannel(
-          channelKey: "basic_channel",
+          channelKey: "navigation_notification",
           channelName: "Basic notifications",
           channelDescription: "Notification channel for basic tests",
           importance: NotificationImportance.Max,
@@ -57,15 +72,18 @@ class NotificationController extends ChangeNotifier {
         receivedAction.actionType == ActionType.SilentAction ||
             receivedAction.actionType == ActionType.SilentBackgroundAction;
 
-    debugPrint(
-      "${isSilentAction ? 'silentAction' : 'Action'} Notification received }",
-    );
+    // debugPrint(
+    //   "${isSilentAction ? 'silentAction' : 'Action'} Notification received }",
+    // );
 
     debugPrint("Received action ${receivedAction.toString()}");
 
-    if (receivedAction.buttonKeyPressed == 'SUBSCRIBE') {
-      debugPrint("Subscribe action button pressed");
-    }
+    // if (receivedAction.buttonKeyPressed == 'SUBSCRIBE') {
+    //   debugPrint("Subscribe action button pressed");
+    // }
+
+    // navigate to a screen
+    navigateHelper(receivedAction);
 
     Fluttertoast.showToast(
       msg:
@@ -117,5 +135,15 @@ class NotificationController extends ChangeNotifier {
       backgroundColor: Colors.blue,
       gravity: ToastGravity.BOTTOM,
     );
+  }
+
+  // this function is called when the app is terminatted
+  static Future<void> getInitialNotificationAction() async {
+    ReceivedAction? receivedAction = await AwesomeNotifications()
+        .getInitialNotificationAction(removeFromActionEvents: true);
+
+    if (receivedAction == null) return;
+
+    navigateHelper(receivedAction);
   }
 }
