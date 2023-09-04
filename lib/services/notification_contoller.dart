@@ -41,8 +41,7 @@ class NotificationController extends ChangeNotifier {
   static Future<void> initializeNotificationsEventListeners() async {
     //
     await AwesomeNotifications().setListeners(
-      onActionReceivedMethod:
-          NotificationController.onDismissActionReceivedMethod,
+      onActionReceivedMethod: NotificationController.onActionReceivedMethod,
       onDismissActionReceivedMethod:
           NotificationController.onDismissActionReceivedMethod,
       onNotificationCreatedMethod:
@@ -62,6 +61,12 @@ class NotificationController extends ChangeNotifier {
       "${isSilentAction ? 'silentAction' : 'Action'} Notification received }",
     );
 
+    debugPrint("Received action ${receivedAction.toString()}");
+
+    if (receivedAction.buttonKeyPressed == 'SUBSCRIBE') {
+      debugPrint("Subscribe action button pressed");
+    }
+
     Fluttertoast.showToast(
       msg:
           "${isSilentAction ? 'silentAction' : 'Action'} Notification received }",
@@ -71,6 +76,7 @@ class NotificationController extends ChangeNotifier {
     );
   }
 
+//
   static Future<void> onNotificationCreatedMethod(
       ReceivedNotification receivedAction) async {
     debugPrint(

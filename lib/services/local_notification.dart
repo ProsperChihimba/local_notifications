@@ -34,9 +34,9 @@ class LocalNotification {
       ),
       actionButtons: [
         NotificationActionButton(
-          key: 'READ',
-          label: 'Reply',
-          requireInputText: true,
+          key: 'SUBSCRIBE',
+          label: 'Subscribe',
+          // requireInputText: true,
           autoDismissible: true,
         ),
         NotificationActionButton(
